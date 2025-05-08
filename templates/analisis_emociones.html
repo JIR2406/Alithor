@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Análisis de Emociones</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      background-color: #f2f7f6;
+      color: #333;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+    }
+
+    .container-fluid {
+      display: flex;
+      height: 100%;
+      width: 100%;
+    }
+
+    .sidebar {
+      width: 250px;
+      background-color: #e0f2f1;
+      padding: 30px 20px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .sidebar a {
+      color: #00695c;
+      margin-bottom: 15px;
+      text-decoration: none;
+      border-radius: 6px;
+      padding: 10px 12px;
+      font-weight: 500;
+    }
+
+    .sidebar a:hover {
+      background-color: #b2dfdb;
+    }
+
+    .sidebar .user-info {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .sidebar .user-info i {
+      font-size: 50px;
+      color: #00695c;
+    }
+
+    .main-content {
+      flex-grow: 1;
+      padding: 40px;
+      background-color: #ffffff;
+      overflow-y: auto;
+    }
+
+    .form-container {
+      background-color: #f8fdfc;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    label {
+      font-weight: 600;
+    }
+
+    .form-control {
+      background-color: #ffffff;
+      border: 1px solid #ccc;
+    }
+
+    .btn-primary {
+      background-color: #26a69a;
+      border: none;
+      border-radius: 6px;
+    }
+
+    .btn-primary:hover {
+      background-color: #00796b;
+    }
+
+    .card {
+      margin-bottom: 20px;
+      border: none;
+      border-radius: 10px;
+      background-color: #f5f9f8;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+
+    .card-header {
+      background-color: #e0f2f1;
+      font-weight: 600;
+      color: #004d40;
+    }
+
+    .badge-emocion {
+      font-size: 14px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-weight: 500;
+    }
+
+    .badge-tristeza { background-color: #90a4ae; color: white; }
+    .badge-alegria { background-color: #66bb6a; color: white; }
+    .badge-miedo { background-color: #ffa726; color: white; }
+    .badge-enojo { background-color: #ef5350; color: white; }
+    .badge-sorpresa { background-color: #42a5f5; color: white; }
+
+    @media (max-width: 768px) {
+      .container-fluid {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        height: auto;
+        padding: 20px;
+      }
+
+      .main-content {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container-fluid">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="user-info">
+        <i class="fas fa-user-circle"></i>
+        <p>{{ nombre }} {{ apellido }}<br>{{ rol }}</p>
+      </div>
+      <a href="{% url 'alithor:dashboard' %}"><i class="fas fa-home"></i> Inicio</a>
+      <a href="{% url 'alithor:usuarios' %}"><i class="fas fa-users"></i> Pacientes</a>
+      <a href="{% url 'alithor:cuestionarios' %}"><i class="fas fa-cogs"></i> Cuestionarios</a>
+      <a href="{% url 'alithor:analisis_emociones' %}"><i class="fas fa-chart-line"></i> Análisis de Emociones</a>
+      <a href="#"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="main-content">
+      <h2 class="mb-4 text-center text-success">Análisis de Emociones de los Usuarios</h2>
+
+      <form id="analisisForm">
+        {% csrf_token %}
+
+        {% for respuesta in respuestas %}
+          <div class="card">
+            <div class="card-header">
+              Usuario: {{ respuesta.usuario.nombre }} {{ respuesta.usuario.apellido }} — Pregunta: {{ respuesta.pregunta.texto_pregunta }}
+            </div>
+            <div class="card-body">
+              <p><strong>Respuesta:</strong> {{ respuesta.texto_respuesta }}</p>
+
+              {% if respuesta.emociondetectada_set.all %}
+                {% for emocion in respuesta.emociondetectada_set.all %}
+                  <p><strong>Emoción detectada:</strong>
+                    <span class="badge badge-emocion badge-{{ emocion.emocion|lower }}">
+                      {{ emocion.emocion }} — {{ emocion.nivel_confianza }}%
+                    </span>
+                  </p>
+                {% endfor %}
+              {% else %}
+                <p><strong>Emoción aún no analizada.</strong></p>
+              {% endif %}
+              <!-- Campo oculto para enviar IDs -->
+              <input type="hidden" name="respuesta_{{ respuesta.id }}" value="1" />
+            </div>
+          </div>
+        {% empty %}
+          <p>No hay respuestas aún para analizar.</p>
+        {% endfor %}
+
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <script>
+    $(document).ready(function () {
+      // Guardar análisis
+      $('#analisisForm').on('submit', function (e) {
+        e.preventDefault();
+
+        $.ajax({
+          url: "{% url 'alithor:guardar_analisis_emocional' %}",
+          type: 'POST',
+          data: $(this).serialize(),
+          success: function (response) {
+            if (response.success) {
+              Swal.fire('¡Guardado!', response.message, 'success').then(() => {
+                location.reload();
+              });
+            } else {
+              Swal.fire('Error', response.message, 'error');
+            }
+          },
+          error: function () {
+            Swal.fire('Error', 'Hubo un problema al guardar el análisis.', 'error');
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

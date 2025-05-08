@@ -1,312 +1,198 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard de Pacientes</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <style>
-        /* General body styling */
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', sans-serif;
-            background-color: #121212;
-            color: #ffffff;
-            display: flex;
-            justify-content: flex-start;
-            align-items: stretch;
-            height: 100vh;
-            flex-direction: row;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard de Pacientes</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f7f9fa;
+      display: flex;
+      height: 100vh;
+    }
 
-        /* Main container */
-        .container {
-            display: flex;
-            flex: 1;
-            flex-direction: row;
-            height: 100%;
-            overflow: hidden;
-            background-color: #2c3e50;
-        }
+    .container {
+      display: flex;
+      flex: 1;
+    }
 
-        /* Sidebar */
-        .sidebar {
-            width: 250px;
-            background-color: #2a2a2a;
-            padding: 30px;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
-            overflow-y: auto;
-            transition: all 0.3s ease;
-        }
+    .sidebar {
+      width: 250px;
+      background-color: #e3f3f1;
+      padding: 30px 20px;
+      box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+      overflow-y: auto;
+    }
 
-        .sidebar a {
-            color: #b0b0b0;
-            padding: 12px 15px;
-            text-decoration: none;
-            display: block;
-            font-size: 20px;
-            transition: background-color 0.3s, color 0.3s ease;
-            border-radius: 8px;
-        }
+    .sidebar .user-info {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #2c3e50;
+    }
 
-        .sidebar a:hover {
-            background-color: #34495e;
-            color: #ecf0f1;
-        }
+    .sidebar .user-info i {
+      font-size: 50px;
+    }
 
-        .sidebar .user-info {
-            text-align: center;
-            color: #ecf0f1;
-            margin-bottom: 40px;
-        }
+    .sidebar a {
+      display: block;
+      margin: 10px 0;
+      padding: 12px 15px;
+      text-decoration: none;
+      border-radius: 6px;
+      color: #2c3e50;
+      font-weight: 500;
+      transition: background 0.3s;
+    }
 
-        .sidebar .user-info i {
-            font-size: 60px;
-            margin-bottom: 10px;
-        }
+    .sidebar a:hover {
+      background-color: #c6eae4;
+    }
 
-        .sidebar .user-info p {
-            margin-top: 10px;
-            font-size: 20px;
-            font-weight: 600;
-        }
+    .main-content {
+      flex: 1;
+      padding: 40px;
+      overflow-y: auto;
+      background-color: #ffffff;
+    }
 
-        /* Sidebar scrollbar */
-        .sidebar::-webkit-scrollbar {
-            width: 8px;
-        }
+    .main-content h1 {
+      color: #2c3e50;
+      margin-bottom: 30px;
+    }
 
-        .sidebar::-webkit-scrollbar-thumb {
-            background: #007bff;
-            border-radius: 5px;
-        }
+    .graphs-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
 
-        .sidebar::-webkit-scrollbar-track {
-            background: #2a2a2a;
-        }
+    .graph-container {
+      background-color: #f0f6f5;
+      padding: 20px;
+      border-radius: 10px;
+      flex: 1 1 45%;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
 
-        /* Main content */
-        .main-content {
-            flex: 1;
-            padding: 40px;
-            background-color: #ecf0f1;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-        }
+    .graph-title {
+      text-align: center;
+      margin-bottom: 15px;
+      font-size: 18px;
+      color: #2c3e50;
+      font-weight: 600;
+    }
 
-        .main-content h1 {
-            color: #34495e;
-            margin-bottom: 30px;
-            font-size: 34px;
-            font-weight: 600;
-        }
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
 
-        /* Graph container */
-        .graph-container {
-            background-color: #34495e;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
-            flex: 1;
-            width: 100%;
-        }
+      .sidebar {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-around;
+      }
 
-        .graph-title {
-            font-size: 22px;
-            margin-bottom: 20px;
-            text-align: center;
-            color: #ecf0f1;
-        }
+      .main-content {
+        padding: 20px;
+      }
 
-        /* Flexbox to display 2 graphs per row */
-        .graphs-row {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            justify-content: space-between;
-        }
-
-        /* Responsiveness for the graphs */
-        .graph-container {
-            flex: 0 0 48%; /* Allow 2 graphs per row */
-        }
-
-        /* Button Styling */
-        .btn-custom {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
-            transition: all 0.3s ease;
-            margin: 10px 0;
-        }
-
-        .btn-custom:hover {
-            background-color: #0056b3;
-            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.5);
-        }
-
-        /* Responsiveness */
-        @media (max-width: 768px) {
-            .container {
-                flex-direction: column;
-            }
-
-            .sidebar {
-                width: 100%;
-                height: auto;
-                padding: 20px;
-            }
-
-            .main-content {
-                padding: 20px;
-            }
-
-            .graph-container {
-                margin-bottom: 20px;
-                padding: 20px;
-                width: 100%; /* Full width on mobile */
-            }
-
-            .sidebar a {
-                font-size: 16px;
-            }
-
-            .sidebar .user-info {
-                margin-bottom: 20px;
-            }
-
-            .btn-custom {
-                width: 100%;
-                padding: 12px;
-            }
-        }
-    </style>
+      .graph-container {
+        flex: 1 1 100%;
+      }
+    }
+  </style>
 </head>
-
 <body>
+  <div class="container">
+    {% include 'partials/sidebar.html' %}
 
-    <div class="container">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <div class="user-info">
-                <i class="fas fa-user-circle"></i>
-                <p>Jair <br> Administrador</p>
-            </div>
-
-            <a href="C:/Users/Jair/Documents/8vo%20Semestre/Taller%20de%20Investigaci%C3%B3n%202/Alithor/view/dashboard.html"><i class="fas fa-home"></i> Inicio</a>
-            <a href="C:/Users/Jair/Documents/8vo%20Semestre/Taller%20de%20Investigaci%C3%B3n%202/Alithor/view/usuarios.html"><i class="fas fa-users"></i> Pacientes</a>
-            <a href="C:/Users/Jair/Documents/8vo%20Semestre/Taller%20de%20Investigaci%C3%B3n%202/Alithor/view/analisis.html"><i class="fas fa-chart-line"></i> Análisis de Emociones</a>
-            <a href="C:/Users/Jair/Documents/8vo%20Semestre/Taller%20de%20Investigaci%C3%B3n%202/Alithor/view/ajustes.html"><i class="fas fa-cogs"></i> Ajustes</a>
-            <a href="C:/Users/Jair/Documents/8vo%20Semestre/Taller%20de%20Investigaci%C3%B3n%202/Alithor/view/logout.html"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+    <div class="main-content">
+      <h1>Dashboard de Pacientes</h1>
+      <div class="graphs-row">
+        <div class="graph-container">
+          <div class="graph-title">Pacientes Registrados</div>
+          <canvas id="barChart"></canvas>
         </div>
-
-        <!-- Main content -->
-        <div class="main-content">
-            <h1>Bienvenido al Dashboard de Pacientes</h1>
-
-            <!-- Graphs row container -->
-            <div class="graphs-row">
-                <!-- Bar Chart - Pacientes Registrados -->
-                <div class="graph-container">
-                    <div class="graph-title">Gráfico de Pacientes Registrados</div>
-                    <canvas id="barChart"></canvas>
-                </div>
-
-                <!-- Line Chart - Pacientes con Trastornos Detectados -->
-                <div class="graph-container">
-                    <div class="graph-title">Gráfico de Pacientes con Trastornos Detectados</div>
-                    <canvas id="lineChart"></canvas>
-                </div>
-            </div>
-
-            <!-- Graphs row container -->
-            <div class="graphs-row">
-                <!-- Pie Chart - Emociones Desreguladas -->
-                <div class="graph-container">
-                    <div class="graph-title">Gráfico de Emociones Desreguladas</div>
-                    <canvas id="pieChart"></canvas>
-                </div>
-            </div>
-
-            <!-- Button -->
+        <div class="graph-container">
+          <div class="graph-title">Trastornos Detectados</div>
+          <canvas id="lineChart"></canvas>
         </div>
+        <div class="graph-container">
+          <div class="graph-title">Emociones Desreguladas</div>
+          <canvas id="pieChart"></canvas>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <script>
-        // Data for Bar Chart
-        var ctxBar = document.getElementById('barChart').getContext('2d');
-        var barChart = new Chart(ctxBar, {
-            type: 'bar',
-            data: {
-                labels: ['Pacientes Registrados', 'Pacientes Activos', 'Pacientes Inactivos'],
-                datasets: [{
-                    label: 'Cantidad de Pacientes',
-                    data: [150, 120, 30], // Example data
-                    backgroundColor: 'rgba(52, 152, 219, 0.6)',
-                    borderColor: 'rgba(52, 152, 219, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
+  <script>
+    // Chart 1: Pacientes
+    new Chart(document.getElementById('barChart').getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: ['Registrados', 'Activos', 'Inactivos'],
+        datasets: [{
+          label: 'Pacientes',
+          data: [{{ total_pacientes }}, {{ pacientes_activos }}, {{ pacientes_inactivos }}],
+          backgroundColor: ['#4db6ac', '#81c784', '#e57373'],
+          borderColor: ['#009688', '#388e3c', '#c62828'],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true } }
+      }
+    });
 
-        // Data for Line Chart
-        var ctxLine = document.getElementById('lineChart').getContext('2d');
-        var lineChart = new Chart(ctxLine, {
-            type: 'line',
-            data: {
-                labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'], // Example months
-                datasets: [{
-                    label: 'Pacientes con Trastornos',
-                    data: [10, 20, 15, 30, 25, 40], // Example data
-                    borderColor: 'rgba(46, 204, 113, 1)',
-                    fill: false,
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                responsive: true
-            }
-        });
+    // Chart 2: Trastornos por Mes
+    new Chart(document.getElementById('lineChart').getContext('2d'), {
+      type: 'line',
+      data: {
+        labels: {{ meses|safe }},
+        datasets: [{
+          label: 'Diagnósticos por mes',
+          data: {{ pacientes_trastornos|safe }},
+          borderColor: '#26a69a',
+          backgroundColor: 'rgba(38,166,154,0.1)',
+          fill: true,
+          tension: 0.3
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { position: 'top' } }
+      }
+    });
 
-        // Data for Pie Chart
-        var ctxPie = document.getElementById('pieChart').getContext('2d');
-        var pieChart = new Chart(ctxPie, {
-            type: 'pie',
-            data: {
-                labels: ['Desreguladas', 'Reguladas'],
-                datasets: [{
-                    label: 'Emociones Desreguladas',
-                    data: [30, 70], // Example data
-                    backgroundColor: ['rgba(231, 76, 60, 0.8)', 'rgba(46, 204, 113, 0.8)'],
-                    borderColor: ['rgba(231, 76, 60, 1)', 'rgba(46, 204, 113, 1)'],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true
-            }
-        });
-    </script>
-
+    // Chart 3: Emociones
+    new Chart(document.getElementById('pieChart').getContext('2d'), {
+      type: 'pie',
+      data: {
+        labels: ['Desreguladas', 'Reguladas'],
+        datasets: [{
+          data: [{{ emociones_desreguladas }}, {{ emociones_reguladas }}],
+          backgroundColor: ['#ef5350', '#66bb6a'],
+          borderColor: ['#c62828', '#2e7d32'],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { position: 'bottom' }
+        }
+      }
+    });
+  </script>
 </body>
-
 </html>

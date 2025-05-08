@@ -1,0 +1,25 @@
+<!-- Modal Eliminar Usuario -->
+<div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <form id="deleteUserForm" method="post">
+        {% csrf_token %} <!-- Agregado -->
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="deleteUserModalLabel">Eliminar Usuario</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            ¿Estás seguro que deseas eliminar este usuario?
+            <input type="hidden" id="deleteUserId" name="user_id" />
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-danger">Sí, Eliminar</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  

@@ -1,102 +1,163 @@
-<!DOCTYPE html>
+<!DOCTYPE htm>
 <html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Iniciar sesión</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: #e5e5e5;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Iniciar sesión - Hospital</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Segoe UI', sans-serif;
+        background: #f1f4f3;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
 
-    .login-box {
-      background: #ffffff;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-      width: 350px;
-      text-align: center;
-      box-sizing: border-box;
-    }
+      .login-box {
+        background: #ffffff;
+        padding: 40px 30px;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 400px;
+        box-sizing: border-box;
+        text-align: center;
+      }
 
-    .login-box h2 {
-      margin-bottom: 25px;
-      font-size: 24px;
-      color: #333333;
-    }
+      .login-box h2 {
+        margin-bottom: 8px;
+        font-size: 26px;
+        color: #333333;
+      }
 
-    .login-box input[type="text"],
-    .login-box input[type="password"] {
-      width: 100%;
-      padding: 12px 15px;
-      margin-bottom: 20px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      font-size: 16px;
-      background-color: #f9f9f9;
-      box-sizing: border-box;
-      transition: border-color 0.3s ease;
-    }
+      .login-box p.subtitle {
+        margin-top: 0;
+        margin-bottom: 25px;
+        font-size: 14px;
+        color: #666666;
+      }
 
-    .login-box input[type="text"]:focus,
-    .login-box input[type="password"]:focus {
-      border-color: #007bff;
-      background-color: #f1faff;
-      outline: none;
-    }
+      .login-box label {
+        display: block;
+        text-align: left;
+        margin-bottom: 6px;
+        color: #444;
+        font-size: 14px;
+      }
 
-    .login-box button {
-      width: 100%;
-      padding: 12px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
-      font-size: 16px;
-      transition: background-color 0.3s ease;
-    }
+      .login-box input[type='text'],
+      .login-box input[type='password'] {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 15px;
+        background-color: #f9f9f9;
+        transition: 0.3s;
+      }
 
-    .login-box button:hover {
-      background-color: #0056b3;
-    }
+      .login-box input:focus {
+        border-color: #7bc6b7;
+        background-color: #eefaf7;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(123, 198, 183, 0.2);
+      }
 
-    .login-box a {
-      display: block;
-      margin-top: 15px;
-      color: #007bff;
-      font-size: 14px;
-      text-decoration: none;
-      transition: text-decoration 0.3s ease;
-    }
+      .login-box button {
+        width: 100%;
+        padding: 12px;
+        background-color: #7bc6b7;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
 
-    .login-box a:hover {
-      text-decoration: underline;
-    }
+      .login-box button:hover {
+        background-color: #63afa2;
+      }
 
-    .login-box .forgot-password {
-      color: #666666;
-      font-size: 14px;
-    }
-  </style>
-</head>
-<body>
-  <div class="login-box">
-    <h2>Iniciar sesión</h2>
-    <form>
-      <input type="text" id="usuario" placeholder="Introduce tu usuario" required>
-      <input type="password" id="contrasena" placeholder="Introduce tu contraseña" required>
-      <button type="submit">Entrar</button>
-      <a href="{% url 'alithor:dashboard' %}" class="forgot-password">¿Olvidaste tu contraseña?</a>
-    </form>
-  </div>
-</body>
+      .login-box a {
+        display: block;
+        margin-top: 18px;
+        font-size: 13px;
+        color: #5f9f94;
+        text-decoration: none;
+      }
+
+      .login-box a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login-box">
+      <h2>Acceso al Sistema</h2>
+      <p class="subtitle">Ingrese sus credenciales del hospital</p>
+      <form id="loginForm">
+        {% csrf_token %}
+        <label for="usuario">Correo</label>
+        <input type="text" name="username" id="usuario" placeholder="usuario@adolfo.com" required />
+
+        <label for="contrasena">Contraseña</label>
+        <input type="password" name="password" id="contrasena" placeholder="********" required />
+
+        <button type="submit">Entrar</button>
+        <a href="#">¿Olvidó su contraseña?</a>
+      </form>
+    </div>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+      const LOGIN_URL = "{% url 'login' %}";
+
+      $('#loginForm').on('submit', function (e) {
+        e.preventDefault();
+        const username = $('#usuario').val();
+        const password = $('#contrasena').val();
+
+        $.ajax({
+          url: LOGIN_URL,
+          method: 'POST',
+          data: {
+            username: username,
+            password: password,
+            csrfmiddlewaretoken: $('[name=csrfmiddlewaretoken]').val()
+          },
+          success: function (response) {
+            if (response.success) {
+              Swal.fire({
+                icon: 'success',
+                title: 'Bienvenido',
+                text: 'Accediendo al sistema...',
+                timer: 1500,
+                showConfirmButton: false
+              }).then(() => {
+                window.location.href = response.redirect_url;
+              });
+            } else {
+              Swal.fire('Error', 'Credenciales incorrectas', 'error');
+            }
+          },
+          error: function () {
+            Swal.fire('Error', 'No se pudo conectar al servidor', 'error');
+          }
+        });
+      });
+    </script>
+
+    {% load static %}
+    <script src="{% static 'alithor/js/login_functions.js' %}"></script>
+  </body>
 </html>

@@ -1,0 +1,53 @@
+<!-- Modal Editar Usuario -->
+<div class="modal fade" id="editUserModal" tabindex="-1" role="dialog" aria-labelledby="editUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <form id="editUserForm" method="post">
+        {% csrf_token %} <!-- Agregado -->
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editUserModalLabel">Editar Usuario</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" id="editUserId" name="user_id" />
+            <div class="form-group">
+              <label>Nombre</label>
+              <input type="text" class="form-control" id="editNombre" name="nombre" required />
+            </div>
+            <div class="form-group">
+              <label>Apellido</label>
+              <input type="text" class="form-control" id="editApellido" name="apellido" required />
+            </div>
+            <div class="form-group">
+              <label>Correo</label>
+              <input type="email" class="form-control" id="editCorreo" name="correo" required />
+            </div>
+            <div class="form-group">
+              <label>Número de Empleado</label>
+              <input type="text" class="form-control" id="editNumeroEmpleado" name="numero_empleado" required />
+            </div>
+            <div class="form-group">
+              <label>Rol</label>
+              <select class="form-control" id="editRol" name="rol" required>
+                <option value="Administrador">Administrador</option>
+                <option value="Cliente">Cliente</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Estado</label>
+              <select class="form-control" id="editStatus" name="status" required>
+                <option value="true">Activo</option>
+                <option value="false">Inactivo</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>

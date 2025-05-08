@@ -1,0 +1,14 @@
+<div class="sidebar">
+  <div class="user-info">
+    <i class="fas fa-user-circle"></i>
+    <p>
+      {{ nombre }} {{ apellido }}<br />{{ rol }}
+    </p>
+  </div>
+
+  <a href="{% url 'alithor:dashboard' %}"><i class="fas fa-home"></i> Inicio</a>
+  <a href="{% url 'alithor:usuarios' %}"><i class="fas fa-users"></i> Pacientes</a>
+  <a href="{% url 'alithor:cuestionarios' %}"><i class="fas fa-cogs"></i> Cuestionarios</a>
+  <a href="{% url 'alithor:analisis_emociones' %}"><i class="fas fa-chart-line"></i> Análisis de Emociones</a>
+  <a href="#"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+</div>
