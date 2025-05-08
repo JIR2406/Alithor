@@ -16,6 +16,7 @@ STATIC_URL = '/static/'
 # Si usas un almacenamiento estático de producción, configura STATIC_ROOT
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
 
 # Quick-start development settings - unsuitable for production
@@ -26,6 +27,10 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG')
+
+if not DEBUG:
+    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+
 
 ALLOWED_HOSTS = ['*']
 
