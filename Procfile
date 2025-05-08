@@ -1,1 +1,1 @@
-web: gunicorn alithor.wsgi:application
+web: gunicorn core.wsgi:application
