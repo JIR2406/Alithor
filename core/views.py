@@ -22,8 +22,10 @@ class HomeView(View):
                 request.session['apellido'] = usuario.apellido
                 request.session['rol'] = usuario.rol
                 request.session['status'] = usuario.status
-
-                return JsonResponse({'success': True, 'redirect_url': '/alithor/'})
+                if usuario.rol == 'Administrador':
+                    return JsonResponse({'success': True, 'redirect_url': '/alithor/'})
+                else:
+                    return JsonResponse({'success': True, 'redirect_url': '/alithor/cuestionarios/'})
             else:
                 return JsonResponse({'success': False, 'error': 'Contraseña incorrecta'})
         except Usuario.DoesNotExist:

@@ -41,7 +41,8 @@ class DashboardView(View):
         nombre = request.session.get('nombre')
         apellido = request.session.get('apellido')
         rol = request.session.get('rol')
-
+        if rol != 'Administrador':
+            return JsonResponse({'success': True, 'redirect_url': '/alithor/cuestionarios/'})
         total_pacientes = Usuario.objects.count()
         pacientes_activos = Usuario.objects.filter(status='Activo').count()
         pacientes_inactivos = Usuario.objects.filter(status='Inactivo').count()
@@ -74,6 +75,8 @@ class UsuariosView(View):
         nombre = request.session.get('nombre')
         apellido = request.session.get('apellido')
         rol = request.session.get('rol')
+        if rol != 'Administrador':
+            return JsonResponse({'success': True, 'redirect_url': '/alithor/cuestionarios/'})
         usuarios = Usuario.objects.all()
         context = {
             'nombre': nombre,
